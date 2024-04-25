@@ -1,7 +1,5 @@
 local RemoteProperty = require(script.RemoteProperty)
 local RemoteSignal = require(script.RemoteSignal)
-local RemoteTable = require(script.RemoteTable)
-
 local Types = require(script.Parent.Types)
 local Util = require(script.Parent.Util)
 
@@ -136,19 +134,6 @@ function Server.CreateProperty(
 	assert(Util.IsServer, "CreateProperty must be called from the server")
 	local folder = Util.GetCommSubFolder(parent, "RP"):Expect("Failed to get Comm RP folder")
 	local rp = RemoteProperty.new(folder, name, initialValue, inboundMiddleware, outboundMiddleware)
-	return rp
-end
-
-function Server.CreateTable(
-	parent: Instance,
-	name: string,
-	initialValue: any,
-	inboundMiddleware: Types.ServerMiddleware?,
-	outboundMiddleware: Types.ServerMiddleware?
-)
-	assert(Util.IsServer, "CreateTable must be called from the server")
-	local folder = Util.GetCommSubFolder(parent, "RT"):Expect("Failed to get Comm RT folder")
-	local rp = RemoteTable.new(folder, name, initialValue, inboundMiddleware, outboundMiddleware)
 	return rp
 end
 
