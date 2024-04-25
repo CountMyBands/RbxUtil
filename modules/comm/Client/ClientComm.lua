@@ -170,6 +170,14 @@ function ClientComm:GetProperty(
 	return Comm.GetProperty(self._instancesFolder, name, inboundMiddleware, outboundMiddleware)
 end
 
+function ClientComm:GetTable(
+	name: string,
+	inboundMiddleware: Types.ClientMiddleware?,
+	outboundMiddleware: Types.ClientMiddleware?
+)
+	return Comm.GetTable(self._instancesFolder, name, inboundMiddleware, outboundMiddleware)
+end
+
 --[=[
 	@param inboundMiddleware ClientMiddleware?
 	@param outboundMiddleware ClientMiddleware?
@@ -194,6 +202,7 @@ function ClientComm:BuildObject(inboundMiddleware: Types.ClientMiddleware?, outb
 	local rfFolder = self._instancesFolder:FindFirstChild("RF")
 	local reFolder = self._instancesFolder:FindFirstChild("RE")
 	local rpFolder = self._instancesFolder:FindFirstChild("RP")
+	local rtFolder = self._instancesFolder:FindFirstChild("RT")
 	if rfFolder then
 		for _, rf in rfFolder:GetChildren() do
 			if not rf:IsA("RemoteFunction") then
@@ -219,6 +228,14 @@ function ClientComm:BuildObject(inboundMiddleware: Types.ClientMiddleware?, outb
 				continue
 			end
 			obj[re.Name] = self:GetProperty(re.Name, inboundMiddleware, outboundMiddleware)
+		end
+	end
+	if rtFolder then
+		for _, re in rtFolder:GetChildren() do
+			if not re:IsA("RemoteEvent") then
+				continue
+			end
+			obj[re.Name] = self:GetTable(re.Name, inboundMiddleware, outboundMiddleware)
 		end
 	end
 	return obj

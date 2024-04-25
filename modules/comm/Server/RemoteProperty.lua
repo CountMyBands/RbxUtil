@@ -64,7 +64,7 @@ function RemoteProperty.new(
 	self._playerRemoving = Players.PlayerRemoving:Connect(function(player)
 		self._perPlayer[player] = nil
 	end)
-	self._rs:Connect(function(player)
+	self._request = self._rs:Connect(function(player)
 		local playerValue = self._perPlayer[player]
 		local value = if playerValue == nil then self._value elseif playerValue == None then nil else playerValue
 		self._rs:Fire(player, value)

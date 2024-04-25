@@ -3,6 +3,7 @@ local Types = require(script.Parent.Types)
 local Promise = require(script.Parent.Parent.Promise)
 local ClientRemoteSignal = require(script.ClientRemoteSignal)
 local ClientRemoteProperty = require(script.ClientRemoteProperty)
+local ClientRemoteTable = require(script.ClientRemoteTable)
 
 local Client = {}
 
@@ -130,6 +131,19 @@ function Client.GetProperty(
 	local re = folder:WaitForChild(name, Util.WaitForChildTimeout)
 	assert(re ~= nil, "Failed to find RemoteEvent for RemoteProperty: " .. name)
 	return ClientRemoteProperty.new(re, inboundMiddleware, outboundMiddleware)
+end
+
+function Client.GetTable(
+	parent: Instance,
+	name: string,
+	inboundMiddleware: Types.ClientMiddleware?,
+	outboundMiddleware: Types.ClientMiddleware?
+)
+	assert(not Util.IsServer, "GetTable must be called from the client")
+	local folder = Util.GetCommSubFolder(parent, "RT"):Expect("Failed to get Comm RT folder")
+	local re = folder:WaitForChild(name, Util.WaitForChildTimeout)
+	assert(re ~= nil, "Failed to find RemoteEvent for RemoteTable: " .. name)
+	return ClientRemoteTable.new(re, inboundMiddleware, outboundMiddleware)
 end
 
 return Client

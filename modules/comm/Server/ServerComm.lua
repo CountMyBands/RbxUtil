@@ -201,6 +201,15 @@ function ServerComm:CreateProperty(
 	return Comm.CreateProperty(self._instancesFolder, name, initialValue, inboundMiddleware, outboundMiddleware)
 end
 
+function ServerComm:CreateTable(
+	name: string,
+	initialValue: any,
+	inboundMiddleware: Types.ServerMiddleware?,
+	outboundMiddleware: Types.ServerMiddleware?
+)
+	return Comm.CreateTable(self._instancesFolder, name, initialValue, inboundMiddleware, outboundMiddleware)
+end
+
 --[=[
 	Destroy the ServerComm object.
 ]=]
